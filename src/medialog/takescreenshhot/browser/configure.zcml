@@ -4,18 +4,26 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="medialog.takescreenshhot">
 
+  <!-- fix permissions later-->
+  <browser:page
+          for="*"
+          name="screenshot"
+          permission="zope2.View"
+          class=".form.ScreenshotForm"
+          />
+          
   <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
   <include package="z3c.jbot" file="meta.zcml" />
-  <browser:jbot
+  <!--browser:jbot
       directory="overrides"
       layer="medialog.takescreenshhot.interfaces.IMedialogTakescreenshhotLayer"
-      />
+      /-->
 
   <!-- Publish static files -->
-  <plone:static
+  <!--plone:static
       name="medialog.takescreenshhot"
       type="plone"
       directory="static"
-      />
+      /-->
 
 </configure>
