@@ -92,13 +92,13 @@ async def screenshot_do(elem, folder_id):
 #        continue
 
 
-async def screenshot(request, path):
+async def screenshot(request, mypath):
    # make preview with pyppeteer
    try:
        browser = await launch()
        page = await browser.newPage()
        await page.setViewport({'width': 1700, 'height': 3000})
-       await page.goto(path)
+       await page.goto(mypath)
        height = await page.evaluate("() => document.body.scrollHeight")
        await page.setViewport({'width': 1700, 'height': height})
        #await asyncio.sleep(3)
