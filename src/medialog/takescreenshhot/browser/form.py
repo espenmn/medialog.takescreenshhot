@@ -18,9 +18,9 @@ class ScreenshotForm(BrowserView):
 
     def __call__(self, context):
         import pdb; pdb.set_trace()
-       my_url = "http://localhost:5000/screenshot/www.k2taksering.no"
-       response =  requests.get(my_url)
-       return response.text
+        my_url = "http://localhost:5000/screenshot/www.k2taksering.no"
+        response =  requests.get(my_url)
+        return response.text
 
     @button.buttonAndHandler(_('Save'), name='save')
     def handleAdd(self, action):
