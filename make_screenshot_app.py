@@ -49,16 +49,17 @@ async def screenshot_do(elem, folder_id):
            #print('done before: {0}'.format(pagename))
        else:
            # make preview with pyppeteer
-           browser = await launch()
-           page = await browser.newPage()
-           await page.setViewport({'width': 1700, 'height': 3000})
-           await page.goto(webpage)
-           height = await page.evaluate("() => document.body.scrollHeight")
-           await page.setViewport({'width': 2400, 'height': height})
-           #await asyncio.sleep(3)
-           await page.screenshot({'path': pathname})
-           await browser.close()
-           #print('saved screenshot: {0}'.format(pagename))
+           try:
+               browser = await launch()
+               page = await browser.newPage()
+               await page.setViewport({'width': 1700, 'height': 3000})
+               await page.goto(webpage)
+               height = await page.evaluate("() => document.body.scrollHeight")
+               await page.setViewport({'width': 2400, 'height': height})
+               #await asyncio.sleep(3)
+               await page.screenshot({'path': pathname})
+               await browser.close()
+               #print('saved screenshot: {0}'.format(pagename))
            except Exception:
               continue
            except PageError:
@@ -104,17 +105,19 @@ async def screenshot(request, path):
        await page.screenshot({'path': 'screenshot.png'})
        await browser.close()
        return await response.file('screenshot.png')
+
    except Exception:
-       continue
+       pass
+
    except PageError:
        print('skipping link')
-       continue
+       pass
 
 def get_files(request, name):
-   output_filename = name
-   folder_id = name
-   shutil.make_archive(output_filename, 'gztar', folder_id)
-   return response.file('{0}.tar.gz'.format(output_filename))
+    output_filename = name
+    folder_id = name
+    shutil.make_archive(output_filename, 'gztar', folder_id)
+    return response.file('{0}.tar.gz'.format(output_filename))
 
 app.add_route(sitemap, '/sitemap/<mypath:path>')
 app.add_route(get_files, '/get_files/<name>')
@@ -122,5 +125,3 @@ app.add_route(screenshot, '/screenshot/<mypath:path>')
 
 if __name__ == "__main__":
    app.run(host="0.0.0.0", port=5000, workers=2)
-
-´
