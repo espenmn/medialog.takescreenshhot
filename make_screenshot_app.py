@@ -67,28 +67,28 @@ async def screenshot_do(elem, folder_id):
    return shots
 
 
-async def plone_screenshot(request, path):
-   # make preview with pyppeteer
-   pagename = path.replace("http://", "")
-   pagename = path.replace(".", "-")
-   pagename = path.replace("/", "-") + '.png'
-   try:
-       browser = await launch()
-       page = await browser.newPage()
-       await page.setViewport({'width': 1700, 'height': 3000})
-       await page.goto(path)
-       height = await page.evaluate("() => document.body.scrollHeight")
-       await page.setViewport({'width': 1700, 'height': height})
-       #await asyncio.sleep(3)
-       await page.screenshot({'path': pagename})
-       await browser.close()
-       #return await response.file(pagename)
-       return await response.text(pagename)
-   except Exception:
-       continue
-   except PageError:
-       print('skipping link')
-       continue
+# async def plone_screenshot(request, path):
+#    # make preview with pyppeteer
+#    pagename = path.replace("http://", "")
+#    pagename = path.replace(".", "-")
+#    pagename = path.replace("/", "-") + '.png'
+#    try:
+#        browser = await launch()
+#        page = await browser.newPage()
+#        await page.setViewport({'width': 1700, 'height': 3000})
+#        await page.goto(path)
+#        height = await page.evaluate("() => document.body.scrollHeight")
+#        await page.setViewport({'width': 1700, 'height': height})
+#        #await asyncio.sleep(3)
+#        await page.screenshot({'path': pagename})
+#        await browser.close()
+#        #return await response.file(pagename)
+#        return await response.text(pagename)
+#    except Exception:
+#        continue
+#    except PageError:
+#        print('skipping link')
+#        continue
 
 
 async def screenshot(request, path):
