@@ -13,6 +13,29 @@ from zope.i18nmessageid import MessageFactory
 
 _ = MessageFactory('medialog.takescreenshhot')
 
+class XScreenshotForm(BrowserView):
+    """ Define Form handling"""
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        #import pdb; pdb.set_trace()
+        #context = self.context
+        #page = self.context.absolute_url()
+        my_url = "http://localhost:5000/screenshots"
+        data = '''{
+          "query": {
+                folder_name: 'my_folder_with_images',
+                pages: {'http://medialog.no', 'http://plone.org'}
+            }'''
+        response = requests.post(my_url, data=data)
+
+    #@button.buttonAndHandler(_('Save'), name='save')
+    #def handleAdd(self, action):
+    #    return 'ost'
+
 class ScreenshotForm(BrowserView):
     """ Define Form handling"""
 
