@@ -47,3 +47,4 @@ src/medialog/takescreenshhot/.DS_Store
 
 src/medialog/.DS_Store
 screenshots
+*.gz
