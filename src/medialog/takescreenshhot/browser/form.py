@@ -13,29 +13,6 @@ from zope.i18nmessageid import MessageFactory
 
 _ = MessageFactory('medialog.takescreenshhot')
 
-class XScreenshotForm(BrowserView):
-    """ Define Form handling"""
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-
-    def __call__(self):
-        #import pdb; pdb.set_trace()
-        #context = self.context
-        #page = self.context.absolute_url()
-        my_url = "http://localhost:5000/screenshots"
-        data = '''{
-          "query": {
-                folder_name: 'my_folder_with_images',
-                pages: {'http://medialog.no', 'http://plone.org'}
-            }'''
-        response = requests.post(my_url, data=data)
-
-    #@button.buttonAndHandler(_('Save'), name='save')
-    #def handleAdd(self, action):
-    #    return 'ost'
-
 class ScreenshotForm(BrowserView):
     """ Define Form handling"""
 
@@ -44,16 +21,36 @@ class ScreenshotForm(BrowserView):
         self.request = request
 
     def __call__(self):
-        import pdb; pdb.set_trace()
         context = self.context
-        page = self.context.absolute_url()
-        my_url = "http://localhost:5000/screenshot/{0}".format(page)
-        #return requests.get(my_url)
-        context.REQUEST.RESPONSE.redirect(my_url)
-        #esponse.redirect(my_url, lock=True)
-        #response =  requests.get(my_url)
-        #return response.text
+        folder_name = self.context.Title()
+        my_urls = api.content.find(context=context)
+        return self.make_screenshot(folder_name, my_urls)
 
-    #@button.buttonAndHandler(_('Save'), name='save')
-    #def handleAdd(self, action):
-    #    return 'ost'
+    def make_screenshot(self, folder_name, my_urls):
+        pages_done = []
+        #call one and one page until I find out how to do this the right way
+        for my_url in my_urls:
+            obj = my_url.getObject()
+            page = obj.absolute_url().replace(" ", "")
+            page_name = obj.Title.replace(" ", "")
+            my_url = "http://localhost:5010/single_screenshot/%s/%s/%s" % (folder_name, page_name, page)
+            response = requests.post(my_url)
+            pages_done.append(response)
+
+        return 1
+
+
+    # def __call__(self):
+    #     context = self.context
+    #     my_urls = api.content.find(context=context)
+    #     import pdb; pdb.set_trace()
+    #     #page = self.context.absolute_url()
+    #     my_url = "http://localhost:5010/screenshots"
+    #     data = '''{
+    #       "query": {
+    #             "folder_name": 'my_folder_with_images',
+    #             "pages": [['http://medialog.no', 'image1.png'], ['http://plone.org', 'image2.png']
+    #         }'''
+    #
+    #     response = requests.post(my_url, data)
+    #     return response
